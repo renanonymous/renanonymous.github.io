@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bamboozling</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #222;
+    overflow: hidden;
+  }
+
+  .spinner-text {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    position: relative;
+    width: 12em;
+    height: 1.2em;
+    overflow: hidden;
+  }
+
+  .spinner-word {
+    display: block;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    animation: spinIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .spinner-word.out {
+    animation: spinOut 0.4s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  }
+
+  @keyframes spinIn {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes spinOut {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="spinner-text">
+    <span class="spinner-word" id="word"></span>
+  </div>
+
+  <script>
+    const verbs = [
+      'Bamboozling',
+      'Authenticating',
+      'Encrypting',
+      'Verifying',
+      'Calculating',
+      'Processing',
+      'Decrypting',
+      'Befuddling',
+      'Confabulating',
+      'Orchestrating',
+    ];
+
+    let index = 0;
+    const el = document.getElementById('word');
+
+    function next() {
+      el.classList.remove('out');
+      el.style.animation = 'none';
+      el.textContent = verbs[index];
+      void el.offsetWidth; // force reflow to restart animation
+      el.style.animation = '';
+
+      setTimeout(() => {
+        el.classList.add('out');
+        index = (index + 1) % verbs.length;
+        setTimeout(next, 400);
+      }, 1600);
+    }
+
+    next();
+  </script>
+</body>
+</html>
